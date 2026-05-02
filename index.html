@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sunrise Café</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#fffdf8;--dark:#1c1408;--accent:#e8a030;--accent2:#c47e10;
+  --muted:#8c7a5e;--light:#f7f1e4;--border:#e6dac6;--cream:#fdf5e4;
+  --max:1120px
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--dark)}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 40px}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:99;background:rgba(255,253,248,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 40px;height:70px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Libre Baskerville',serif;font-size:1.3rem;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
+.logo-sun{width:30px;height:30px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.logo em{color:var(--accent);font-style:italic}
+nav ul{display:flex;gap:32px;list-style:none}
+nav ul a{font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);transition:color .25s;font-weight:600}
+nav ul a:hover{color:var(--dark)}
+.nav-btn{padding:10px 24px;background:var(--accent);color:white;border-radius:2px;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;font-family:'Nunito',sans-serif;transition:background .25s;border:none;cursor:pointer}
+.nav-btn:hover{background:var(--accent2)}
+
+/* HERO */
+.hero{position:relative;height:100vh;min-height:640px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero-bg{position:absolute;inset:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,6,0,0.38) 0%,rgba(10,6,0,0.62) 60%,rgba(10,6,0,0.75) 100%)}
+.hero-content{position:relative;z-index:2;max-width:760px;padding:0 24px}
+.hero-pill{display:inline-block;padding:6px 18px;border:1px solid rgba(232,160,48,0.6);border-radius:100px;font-size:0.67rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:26px;font-weight:700;backdrop-filter:blur(4px);background:rgba(232,160,48,0.08)}
+.hero h1{font-family:'Libre Baskerville',serif;font-size:clamp(3rem,7vw,5.8rem);color:white;line-height:1.06;font-weight:700;margin-bottom:22px}
+.hero h1 em{color:var(--accent);font-style:italic}
+.hero-sub{font-size:1.05rem;color:rgba(255,255,255,0.72);line-height:1.75;font-weight:300;max-width:520px;margin:0 auto 38px}
+.hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-hero{display:inline-block;padding:15px 36px;background:var(--accent);color:white;font-size:0.75rem;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;border-radius:2px;transition:all .25s}
+.btn-hero:hover{background:white;color:var(--dark)}
+.btn-hero-o{background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:white}
+.btn-hero-o:hover{background:white;color:var(--dark);border-color:white}
+.hero-hours{position:absolute;bottom:0;left:0;right:0;z-index:2;background:rgba(0,0,0,0.45);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,0.1)}
+.hero-hours-inner{max-width:var(--max);margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:center;gap:60px;height:72px}
+.h-block{text-align:center}
+.h-day{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:4px}
+.h-time{font-size:0.88rem;color:white;font-weight:500}
+.h-sep{width:1px;height:36px;background:rgba(255,255,255,0.15)}
+
+/* FADE */
+.fade{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.fade.show{opacity:1;transform:none}
+.fade-delay-1{transition-delay:0.1s}
+.fade-delay-2{transition-delay:0.2s}
+.fade-delay-3{transition-delay:0.3s}
+
+/* SECTION HEADER */
+.sec-top{text-align:center;margin-bottom:52px}
+.sec-kicker{font-size:0.67rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:12px;display:block}
+.sec-top h2{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:700;line-height:1.15}
+.sec-top p{color:var(--muted);font-size:0.92rem;margin-top:12px;line-height:1.75;max-width:480px;margin-left:auto;margin-right:auto}
+
+/* MENU */
+.menu{padding:100px 0;background:var(--light)}
+.menu-tabs{display:flex;justify-content:center;gap:0;margin-bottom:48px;border-bottom:1px solid var(--border)}
+.tab{padding:14px 36px;font-size:0.73rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:all .25s;font-weight:600}
+.tab.active{color:var(--dark);border-bottom-color:var(--accent)}
+.tab:hover:not(.active){color:var(--dark)}
+.menu-panel{display:none}
+.menu-panel.active{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.menu-card{background:white;border-radius:3px;overflow:hidden;border:1px solid var(--border);transition:transform .3s,box-shadow .3s}
+.menu-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(28,20,8,0.1)}
+.menu-card-img-wrap{overflow:hidden;height:200px}
+.menu-card-img{width:100%;height:200px;object-fit:cover;display:block;transition:transform .5s ease}
+.menu-card:hover .menu-card-img{transform:scale(1.06)}
+.menu-card-body{padding:22px 24px 24px}
+.menu-card-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:8px}
+.menu-card h3{font-family:'Libre Baskerville',serif;font-size:1.1rem;font-weight:700;line-height:1.2}
+.menu-price{color:var(--accent2);font-size:0.88rem;font-weight:700;white-space:nowrap}
+.menu-card p{font-size:0.8rem;color:var(--muted);line-height:1.65}
+.menu-tag{display:inline-block;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;border-radius:2px;margin-top:12px;font-weight:700}
+.tag-popular{background:#fff8ec;color:#c8820a}
+.tag-veg{background:#f0faf3;color:#2a9a55}
+.tag-new{background:#f0f0ff;color:#5540cc}
+
+/* ABOUT */
+.about{padding:100px 0;background:var(--bg)}
+.about-inner{max-width:680px;margin:0 auto;text-align:center}
+.about-inner h2{font-family:'Libre Baskerville',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;margin-bottom:20px;line-height:1.2}
+.about-inner p{color:var(--muted);line-height:1.95;font-size:0.93rem;margin-bottom:16px}
+.about-inner p strong{color:var(--dark)}
+.about-nums{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+.num-box{padding:24px 16px;border:1px solid var(--border);border-radius:3px;text-align:center;background:var(--cream)}
+.num-val{font-family:'Libre Baskerville',serif;font-size:2rem;color:var(--accent);font-weight:700;line-height:1}
+.num-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-top:6px;font-weight:600}
+
+/* RESERVE */
+.reserve{padding:100px 0;background:var(--dark);color:white}
+.reserve-inner{max-width:720px;margin:0 auto;text-align:center;padding:0 40px}
+.reserve h2{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:700;margin-bottom:10px}
+.reserve-sub{color:rgba(255,255,255,0.42);font-size:0.9rem;margin-bottom:52px;line-height:1.8}
+.reserve-form{display:grid;grid-template-columns:1fr 1fr;gap:18px;text-align:left}
+.field-full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:0.63rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.32);font-weight:600}
+.field input,.field select,.field textarea{padding:13px 16px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;background:rgba(255,255,255,0.05);font-family:'Nunito',sans-serif;font-size:0.88rem;color:white;outline:none;transition:border-color .25s;width:100%}
+.field input::placeholder{color:rgba(255,255,255,0.22)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field select option{background:#1c1408;color:white}
+.field textarea{height:86px;resize:none}
+.reserve-btn{grid-column:1/-1;padding:16px;background:var(--accent);color:white;border:none;font-family:'Nunito',sans-serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;border-radius:2px;cursor:pointer;transition:background .25s;margin-top:6px;font-weight:700}
+.reserve-btn:hover{background:var(--accent2)}
+#reserve-thanks{display:none;text-align:center;padding:48px 0}
+#reserve-thanks h3{font-family:'Libre Baskerville',serif;font-size:2rem;color:white;margin-bottom:12px}
+#reserve-thanks p{color:rgba(255,255,255,0.5);line-height:1.8;font-size:0.92rem}
+#reserve-thanks .detail{color:var(--accent);font-weight:600;margin-top:10px}
+.re-again{margin-top:28px;padding:11px 28px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:'Nunito',sans-serif;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border-radius:2px;font-weight:600}
+
+/* CONTACT */
+.contact{padding:72px 0;background:#110c04;color:white}
+.contact-inner{max-width:var(--max);margin:0 auto;padding:0 40px;display:flex;justify-content:center;gap:100px;flex-wrap:wrap}
+.contact h2{font-family:'Libre Baskerville',serif;font-size:1.8rem;font-weight:700;margin-bottom:22px}
+.info-row{margin-bottom:16px}
+.info-label{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;font-weight:700}
+.info-val{font-size:0.88rem;color:rgba(255,255,255,0.5);line-height:1.75}
+footer{background:#110c04;padding:22px 40px;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:center;align-items:center;gap:32px;flex-wrap:wrap}
+footer p{font-size:0.72rem;color:rgba(255,255,255,0.2)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:0.68rem;color:rgba(255,255,255,0.2);letter-spacing:0.12em;text-transform:uppercase;transition:color .25s}
+.footer-links a:hover{color:white}
+
+@media(max-width:900px){
+  .nav-inner{padding:0 20px}.nav-inner ul{display:none}
+  .hero-hours-inner{gap:24px;padding:0 20px}
+  .wrap,.contact-inner,.reserve-inner{padding:0 24px}
+  .menu,.about,.reserve,.contact{padding:72px 0}
+  .menu-panel.active{grid-template-columns:1fr 1fr}
+  .about-nums{grid-template-columns:1fr 1fr}
+  .contact-inner{gap:48px}
+  footer{padding:20px;flex-direction:column;text-align:center}
+}
+@media(max-width:560px){
+  .menu-panel.active{grid-template-columns:1fr}
+  .reserve-form{grid-template-columns:1fr}
+  .field-full{grid-column:1}
+  .h-sep{display:none}
+  .hero-hours-inner{gap:20px}
+  .about-nums{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">
+      <div class="logo-sun">☀️</div>
+      Sunrise <em>Café</em>
+    </div>
+    <ul>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#reserve">Reserve</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#reserve" class="nav-btn">Book a Table</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg">
+    <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=1800&q=85&auto=format&fit=crop" alt="Beautiful breakfast spread">
+  </div>
+  <div class="hero-content">
+    <div class="hero-pill fade">Breakfast · Lunch · Est. 2019</div>
+    <h1 class="fade fade-delay-1">The Best Part<br>of Your Day<br><em>Starts Here.</em></h1>
+    <p class="hero-sub fade fade-delay-2">Fresh ingredients, handcrafted plates, and a warm space where every morning tastes like it matters.</p>
+    <div class="hero-actions fade fade-delay-3">
+      <a href="#menu" class="btn-hero">See Our Menu</a>
+      <a href="#reserve" class="btn-hero btn-hero-o">Reserve a Table</a>
+    </div>
+  </div>
+  <div class="hero-hours">
+    <div class="hero-hours-inner">
+      <div class="h-block"><div class="h-day">Breakfast</div><div class="h-time">7:00am – 11:30am</div></div>
+      <div class="h-sep"></div>
+      <div class="h-block"><div class="h-day">Lunch</div><div class="h-time">12:00pm – 3:30pm</div></div>
+      <div class="h-sep"></div>
+      <div class="h-block"><div class="h-day">Open</div><div class="h-time">7 Days a Week</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="sec-top fade">
+      <span class="sec-kicker">Our Menu</span>
+      <h2>Freshly Made Every Morning</h2>
+      <p>Everything sourced locally and prepared from scratch daily.</p>
+    </div>
+    <div class="menu-tabs">
+      <div class="tab active" onclick="showMenu('breakfast',this)">Breakfast</div>
+      <div class="tab" onclick="showMenu('lunch',this)">Lunch</div>
+      <div class="tab" onclick="showMenu('drinks',this)">Drinks</div>
+    </div>
+
+    <div class="menu-panel active" id="menu-breakfast">
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1541519227354-08fa5d50c820?w=600&q=80&auto=format&fit=crop" alt="Avocado Toast"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Avocado Toast</h3><span class="menu-price">$14</span></div><p>Sourdough, smashed avocado, poached eggs, chili flakes, lemon zest.</p><span class="menu-tag tag-popular">⭐ Popular</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600&q=80&auto=format&fit=crop" alt="Morning Stack"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Morning Stack</h3><span class="menu-price">$16</span></div><p>Fluffy buttermilk pancakes, maple syrup, fresh berries, whipped cream.</p><span class="menu-tag tag-veg">🌿 Vegetarian</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=600&q=80&auto=format&fit=crop" alt="The Full Plate"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>The Full Plate</h3><span class="menu-price">$18</span></div><p>Two eggs your way, bacon, sausage, toast, hash browns, grilled tomato.</p><span class="menu-tag tag-popular">⭐ Popular</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1494390248081-4e521a5940db?w=600&q=80&auto=format&fit=crop" alt="Granola Bowl"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Granola Bowl</h3><span class="menu-price">$12</span></div><p>House granola, Greek yogurt, seasonal fruit, honey drizzle, chia seeds.</p><span class="menu-tag tag-veg">🌿 Vegetarian</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&q=80&auto=format&fit=crop" alt="Eggs Benedict"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Eggs Benedict</h3><span class="menu-price">$17</span></div><p>English muffin, Canadian bacon, poached eggs, hollandaise, chives.</p></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1553909489-cd47e0907980?w=600&q=80&auto=format&fit=crop" alt="Smoked Salmon Bagel"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Smoked Salmon Bagel</h3><span class="menu-price">$19</span></div><p>Toasted bagel, cream cheese, smoked salmon, capers, red onion, dill.</p><span class="menu-tag tag-popular">⭐ Popular</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1484723091739-30f299ad3373?w=600&q=80&auto=format&fit=crop" alt="French Toast"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>French Toast</h3><span class="menu-price">$15</span></div><p>Brioche bread, custard dipped, caramelized banana, powdered sugar, syrup.</p></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1510693206972-df098062cb71?w=600&q=80&auto=format&fit=crop" alt="Veggie Omelette"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Veggie Omelette</h3><span class="menu-price">$14</span></div><p>Three eggs, bell peppers, mushrooms, spinach, feta cheese, toast.</p><span class="menu-tag tag-veg">🌿 Vegetarian</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1590301157890-4810ed352733?w=600&q=80&auto=format&fit=crop" alt="Acai Bowl"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Acai Bowl</h3><span class="menu-price">$13</span></div><p>Blended acai, banana, almond milk, topped with granola, coconut, fruit.</p><span class="menu-tag tag-new">✨ New</span></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" id="menu-lunch">
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&q=80&auto=format&fit=crop" alt="Club Sandwich"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Club Sandwich</h3><span class="menu-price">$16</span></div><p>Triple-decker with turkey, bacon, lettuce, tomato, avocado, mayo, toasted bread.</p><span class="menu-tag tag-popular">⭐ Popular</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=600&q=80&auto=format&fit=crop" alt="Caesar Salad"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Caesar Salad</h3><span class="menu-price">$14</span></div><p>Romaine, house Caesar dressing, parmesan, croutons, anchovies optional.</p><span class="menu-tag tag-veg">🌿 Vegetarian</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=80&auto=format&fit=crop" alt="Wagyu Burger"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Wagyu Burger</h3><span class="menu-price">$22</span></div><p>6oz wagyu beef, aged cheddar, caramelized onions, truffle aioli, brioche bun.</p><span class="menu-tag tag-popular">⭐ Popular</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=600&q=80&auto=format&fit=crop" alt="Chicken Wrap"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Chicken Wrap</h3><span class="menu-price">$15</span></div><p>Marinated chicken, mixed greens, tomato, avocado, chipotle sauce, flour tortilla.</p></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600&q=80&auto=format&fit=crop" alt="Tomato Bisque"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Tomato Bisque</h3><span class="menu-price">$10</span></div><p>Slow roasted tomatoes, cream, basil oil, served with grilled sourdough.</p><span class="menu-tag tag-veg">🌿 Vegetarian</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80&auto=format&fit=crop" alt="Grain Bowl"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Grain Bowl</h3><span class="menu-price">$16</span></div><p>Quinoa, roasted veggies, chickpeas, tahini dressing, pumpkin seeds, lemon.</p><span class="menu-tag tag-veg">🌿 Vegetarian</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1551504734-5da44e9ef3b4?w=600&q=80&auto=format&fit=crop" alt="Fish Tacos"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Fish Tacos</h3><span class="menu-price">$18</span></div><p>Beer battered cod, slaw, pico de gallo, chipotle crema, flour tortillas.</p><span class="menu-tag tag-new">✨ New</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1528736235302-52922df5c122?w=600&q=80&auto=format&fit=crop" alt="Tuna Melt"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Tuna Melt</h3><span class="menu-price">$14</span></div><p>Albacore tuna, cheddar, tomato, sourdough, served with side salad.</p></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1619740455993-9d3c8e4c7cf6?w=600&q=80&auto=format&fit=crop" alt="BLT Panini"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>BLT Panini</h3><span class="menu-price">$13</span></div><p>Applewood bacon, heirloom tomato, butter lettuce, garlic aioli, pressed ciabatta.</p></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" id="menu-drinks">
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&q=80&auto=format&fit=crop" alt="House Espresso"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>House Espresso</h3><span class="menu-price">$4</span></div><p>Single origin beans, double shot, served with sparkling water.</p></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1561047029-3000c68339ca?w=600&q=80&auto=format&fit=crop" alt="Oat Milk Latte"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Oat Milk Latte</h3><span class="menu-price">$6</span></div><p>Double shot espresso, steamed oat milk, light foam.</p><span class="menu-tag tag-popular">⭐ Popular</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1600271772470-bd22a42787b3?w=600&q=80&auto=format&fit=crop" alt="Fresh Orange Juice"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Fresh Orange Juice</h3><span class="menu-price">$7</span></div><p>Freshly squeezed Valencia oranges, served chilled.</p></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&q=80&auto=format&fit=crop" alt="Matcha Latte"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Matcha Latte</h3><span class="menu-price">$7</span></div><p>Ceremonial grade matcha, steamed oat milk, light honey.</p><span class="menu-tag tag-new">✨ New</span></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=600&q=80&auto=format&fit=crop" alt="House Lemonade"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>House Lemonade</h3><span class="menu-price">$5</span></div><p>Freshly squeezed lemons, cane sugar, sparkling water, mint.</p></div>
+      </div>
+      <div class="menu-card fade">
+        <div class="menu-card-img-wrap"><img class="menu-card-img" src="https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=600&q=80&auto=format&fit=crop" alt="Craft Cocktails"></div>
+        <div class="menu-card-body"><div class="menu-card-top"><h3>Craft Cocktails</h3><span class="menu-price">$14</span></div><p>Ask your server for today's seasonal cocktail selection.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-inner fade">
+      <span class="sec-kicker">Our Story</span>
+      <h2>A Table Worth Coming Back To</h2>
+      <p>Sunrise Café was born from a simple idea — that <strong>breakfast and lunch deserve the same care</strong> as any fine dinner. We source from local farms, bake our bread in-house each morning, and brew with single-origin beans roasted just down the road.</p>
+      <p>Since opening in 2019, we've become the neighborhood's favorite place to slow down, reconnect, and eat something truly worth waking up for.</p>
+      <div class="about-nums">
+        <div class="num-box"><div class="num-val">6</div><div class="num-label">Years Open</div></div>
+        <div class="num-box"><div class="num-val">100%</div><div class="num-label">Local</div></div>
+        <div class="num-box"><div class="num-val">40+</div><div class="num-label">Menu Items</div></div>
+        <div class="num-box"><div class="num-val">4.9★</div><div class="num-label">Rating</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reserve" id="reserve">
+  <div class="reserve-inner">
+    <h2 class="fade">Reserve a Table</h2>
+    <p class="reserve-sub fade">Book your spot online — we'll confirm within 2 hours by email.</p>
+    <form id="reserve-form" class="reserve-form">
+      <div class="field fade"><label>First Name</label><input type="text" id="res-name" placeholder="Jane" required></div>
+      <div class="field fade"><label>Last Name</label><input type="text" placeholder="Smith" required></div>
+      <div class="field fade"><label>Email Address</label><input type="email" placeholder="jane@example.com" required></div>
+      <div class="field fade"><label>Phone Number</label><input type="tel" placeholder="(555) 000-0000"></div>
+      <div class="field fade"><label>Date</label><input type="date" id="res-date" required></div>
+      <div class="field fade">
+        <label>Time</label>
+        <select id="res-time" required>
+          <option value="">Select a time</option>
+          <optgroup label="Breakfast (7am – 11:30am)">
+            <option>7:00 AM</option><option>7:30 AM</option><option>8:00 AM</option><option>8:30 AM</option>
+            <option>9:00 AM</option><option>9:30 AM</option><option>10:00 AM</option><option>10:30 AM</option>
+            <option>11:00 AM</option><option>11:30 AM</option>
+          </optgroup>
+          <optgroup label="Lunch (12pm – 3:30pm)">
+            <option>12:00 PM</option><option>12:30 PM</option><option>1:00 PM</option><option>1:30 PM</option>
+            <option>2:00 PM</option><option>2:30 PM</option><option>3:00 PM</option><option>3:30 PM</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="field fade">
+        <label>Party Size</label>
+        <select id="res-party" required>
+          <option value="">Select size</option>
+          <option>1 Guest</option><option>2 Guests</option><option>3 Guests</option>
+          <option>4 Guests</option><option>5 Guests</option><option>6 Guests</option>
+          <option>7+ Guests (large party)</option>
+        </select>
+      </div>
+      <div class="field fade">
+        <label>Occasion</label>
+        <select>
+          <option>No special occasion</option><option>Birthday</option>
+          <option>Anniversary</option><option>Business Lunch</option><option>Date Brunch</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field field-full fade"><label>Special Requests</label><textarea placeholder="Dietary restrictions, allergies, seating preferences..."></textarea></div>
+      <button type="submit" class="reserve-btn fade">Confirm Reservation</button>
+    </form>
+    <div id="reserve-thanks">
+      <div style="font-size:3rem;margin-bottom:18px">☀️</div>
+      <h3>See You Soon!</h3>
+      <p>We've received your reservation.<br>A confirmation will be sent to your email within 2 hours.</p>
+      <p class="detail" id="res-summary"></p>
+      <button class="re-again" onclick="document.getElementById('reserve-form').style.display='grid';document.getElementById('reserve-thanks').style.display='none'">Make Another Reservation</button>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div>
+      <h2>Find Us</h2>
+      <div class="info-row"><div class="info-label">Address</div><div class="info-val">42 Sunrise Ave, Springfield, USA</div></div>
+      <div class="info-row"><div class="info-label">Phone</div><div class="info-val">(555) 987-6543</div></div>
+      <div class="info-row"><div class="info-label">Email</div><div class="info-val">hello@sunrisecafe.com</div></div>
+    </div>
+    <div>
+      <h2>Hours</h2>
+      <div class="info-row"><div class="info-label">Breakfast</div><div class="info-val">7:00am – 11:30am · Daily</div></div>
+      <div class="info-row"><div class="info-label">Lunch</div><div class="info-val">12:00pm – 3:30pm · Daily</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Sunrise Café · All Rights Reserved</p>
+  <div class="footer-links">
+    <a href="#menu">Menu</a><a href="#about">About</a><a href="#reserve">Reserve</a><a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+document.getElementById('res-date').min = new Date().toISOString().split('T')[0];
+
+function showMenu(id, el) {
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('menu-' + id).classList.add('active');
+  el.classList.add('active');
+  document.querySelectorAll('#menu-'+id+' .fade').forEach((el,i) => {
+    el.classList.remove('show');
+    setTimeout(()=>el.classList.add('show'), i*60);
+  });
+}
+
+document.getElementById('reserve-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('res-name').value;
+  const date = document.getElementById('res-date').value;
+  const time = document.getElementById('res-time').value;
+  const party = document.getElementById('res-party').value;
+  const d = new Date(date);
+  const formatted = d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('res-summary').textContent = name+' · '+formatted+' at '+time+' · '+party;
+  this.style.display = 'none';
+  document.getElementById('reserve-thanks').style.display = 'block';
+});
+
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e,i) => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add('show'), i*65) });
+},{threshold:0.08});
+document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
